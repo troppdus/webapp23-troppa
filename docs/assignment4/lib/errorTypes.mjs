@@ -40,9 +40,17 @@ class IntervalConstraintViolation extends Error {
   }
 }
 
+class ReferentialIntegrityConstraintViolation extends Error {
+  constructor (msg) {
+    super( msg);
+    this.name = "ReferentialIntegrityConstraintViolation";
+  }
+}
+
 export { NoConstraintViolation, 
   MandatoryValueConstraintViolation, 
   RangeConstraintViolation,
   UniquenessConstraintViolation,
   StringLenghtConstrainViolation,
-  IntervalConstraintViolation};
+  IntervalConstraintViolation,
+  ReferentialIntegrityConstraintViolation};

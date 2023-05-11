@@ -1,1 +1,79 @@
-<mxfile host="app.diagrams.net" modified="2023-05-11T14:38:32.201Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="W_kJnBJ3OMM7GPw33DlK" version="20.8.11" type="device"><diagram name="Seite-1" id="56pWksoZ0e1JbsKAL9xR">7Zttb6M4EMc/DdLdSa0C5PFlIN1tpXZVNau7115wwFeDI+M2yX76G4MJIcAmuQ3rSmspiuLBGDz/n7FnTCzXT7afOVrHTyzE1HIG4dZyF5bjDCcOfEvDrjCMZ5PCEHESFia7MizJd6yMA2V9IyHOahUFY1SQdd0YsDTFgajZEOdsU6+2YrR+1TWKcMOwDBBtWv8hoYgL69SZVPZ7TKK4vLI9nhVHElRWVj3JYhSyzYHJvbNcnzMmil/J1sdU+q70S3Hep46j+xvjOBXnnLBhj/c2R/fzzz6/+ffODj4FrzeqlXdE31SHn9g7wZYzthwXNHA9dfNiV3ok25CEohRK3oqlYqmO2FBGlEQp/A7gljAHwzvmgoAz5+qAYGuwBjGh4SPasTd545lAwWtZ8mLGyXdoFlHVJhzmQnEBd3VYYynPBLO8TY4zqPNcesM+Mj2hba3iI8qEMgSMUrTOyLd9NxLEI5J6TAiWqErKTdAdvO30v71XFUYDZgkWfAdVyqGgOFADwRmo8qbCyh0pW3yAlFsOIaRQjvZNV2rDDyX4BeKPGuJbvmPNvQgLaC+Dbyh6noRZQvEQWiPPtkZQEVwyh+9nlhFB3vEDyB2B4GCfeHDJyaJBDfhN5Gpy9op9RhngsUhZgRGh9MhUkkTxSnRylK1RQNLoMa+zGFaWF+U9aWJw7ormAy8mYYhTyQATSKBCcKnumpFU5N4defABEfzB7SjvqZ/3eV+Gj6zOhc9S6AsiufYYaNpgSdR5oHQPxSY9JS7j82gp610dlvGZsEjjQBABzj2i5QtL75K12C0FB40MIVcmZORoJmR6CSEcU/AJXiAhORnc3tZQyc0GkOsCMplqBmR2CSAh4bCeA0GP5xzMM5YaOK4Mhz0YaqZjcgkdSKKRge/+Mmz0z4Z75lK1NzbcJhvHIlOSi1eIXIZq9v9SOAGtKK4k/SoVX9zYDdndpuxui8QUfcO0WCsz2T4v6h5Jf0rdOr4kjTEnvao+OnPJOe1J9GFD9CDGwetTEYv8QdLiUQBtdMQjf+4PVD79mzCKch1+16fEYdA+7A2ese7ppEwgdeAzzwxCHxyhme5Zx25mx3KEvsroVsLjqEC3PcI17GhjB54/utlpLllydl6quLcgKMxD3YO412CjD5uh7hyK7bRjs1DRsGKmjI3rgY8hRx85Y93JFbtjuTyvsEGGmQ/FzEz7GrmZ1EdheJqY35SKvkBwHe0r3WbyjeME3GtY+NUsDHWvXJ3mtnBHXtW8CdAl/Ik3Acp86o9eBZi0aL4Pia//ADh3bwb6mcPw0JkyscxbAD/xdChG30WvAbSR0t/ToZlW6wIlRUlXasSAcW0w2nb/fy0YLft3Zo/mp/doTsjetqffJntfezROc97Io85nNUmYFLveCPQEPlPd04nbkWIv+THbNB+eIdvWPfW4HVt9hxC94JXh6GNz5J45l/XHUUfy/QssZIscyA+WtAYdjei0vW1wJXSgWP1HIz928EcX9+4/</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2023-05-11T21:49:38.597Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="aUobSU4cDMp3JzNJ8QuX" version="21.2.9" type="device">
+  <diagram name="Seite-1" id="56pWksoZ0e1JbsKAL9xR">
+    <mxGraphModel dx="472" dy="697" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="woLH1raHAGCr-jE1cFck-1" value="Movie&#xa;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
+          <mxGeometry x="40" y="200" width="370" height="372" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-5" value="«get/set» movieId[1] : PositiveInteger {id}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
+          <mxGeometry y="26" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-6" value="«get/set» title[1] : NonEmptyString" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
+          <mxGeometry y="52" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-8" value="«get/set» releaseDate[0..1] : Date" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
+          <mxGeometry y="78" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-9" value="«get/set» director[1] : Person" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
+          <mxGeometry y="104" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-7" value="«get/set» actors[*] : Person" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
+          <mxGeometry y="130" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
+          <mxGeometry y="156" width="370" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-4" value="checkMovieId(in id : PositiveInteger) : ConstraintViolation" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
+          <mxGeometry y="164" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-10" value="checkMovieIdAsId(in id : PositiveInteger) : ConstraintViolation" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
+          <mxGeometry y="190" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-11" value="checkTitle(in title : NonEmptyString) : ConstraintViolation" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
+          <mxGeometry y="216" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-13" value="checkReleaseDate(in newDate : String) : ConstraintViolation" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
+          <mxGeometry y="242" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-12" value="checkDirector(in director_id : PositiveInteger) : ConstraintViolation" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
+          <mxGeometry y="268" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-14" value="checkActor(in actor_id : PositiveInteger) : ConstraintViolation" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
+          <mxGeometry y="294" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-16" value="addActor(in actor : Person)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
+          <mxGeometry y="320" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-17" value="removeActor(in actor : Person)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
+          <mxGeometry y="346" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-25" value="Person" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
+          <mxGeometry x="430" y="200" width="370" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-19" value="«get/set» personId : PositiveInteger {id}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-25" vertex="1">
+          <mxGeometry y="26" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-20" value="«get/set» name : NonEmptyString" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-25" vertex="1">
+          <mxGeometry y="52" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-27" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="woLH1raHAGCr-jE1cFck-25" vertex="1">
+          <mxGeometry y="78" width="370" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-29" value="checkPersonId(in id : PositiveInteger) : ConstraintViolation" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="woLH1raHAGCr-jE1cFck-25" vertex="1">
+          <mxGeometry y="86" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-31" value="checkPersonIdAsId(in id : PositiveInteger) : ConstraintViolation" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="woLH1raHAGCr-jE1cFck-25" vertex="1">
+          <mxGeometry y="112" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-30" value="checkPersonIdAsIdRef(in id : PositiveInteger) : ConstraintViolation" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="woLH1raHAGCr-jE1cFck-25" vertex="1">
+          <mxGeometry y="138" width="370" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="woLH1raHAGCr-jE1cFck-32" value="checkName(in name : NonEmptyString) : ConstraintViolation" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="woLH1raHAGCr-jE1cFck-25" vertex="1">
+          <mxGeometry y="164" width="370" height="26" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
