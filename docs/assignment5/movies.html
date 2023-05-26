@@ -2,13 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <title>Plain JS Unidirectional Association App: Manage Movies</title>
+  <title>Dustin Troppa Movie App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="theme-color" content="#ffffff"/>
-  <link rel="icon" href="favicon.svg"/>
-  <link rel="mask-icon" href="mask-icon.svg" color="#000000"/>
-  <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
-  <link rel="manifest" href="manifest.json"/>
 
   <link rel="stylesheet" href="css/normalize.css"/>
   <link rel="stylesheet" href="css/main.css"/>
@@ -19,11 +15,7 @@
 <header>
   <div class="wrapper clearfix">
     <div class="title">
-      <figure><a href="https://web-engineering.info">
-        <img alt="" title="Icon made by Lorc under CC BY 3.0. Available on https://game-icons.net"
-             src="favicon.svg"/></a></figure>
-      <h1>Public Library</h1>
-      <h2>Plain JS Unidirectional Association App</h2>
+      <h1>Movie Database</h1>
     </div>
     <nav>
       <ul>
@@ -89,7 +81,7 @@
           <label>Title: <input type="text" name="title"/></label>
         </div>
         <div class="field">
-          <label>Release Date: <input type="text" name="releaseDate"/></label>
+          <label>Release Date: <input type="date" id="datepicker" name="releaseDate"/></label>
         </div>
         <div class="select-one">
           <label>Director: <select name="selectDirector"></select></label>
@@ -122,7 +114,7 @@
           <label>Title: <input type="text" name="title"/></label>
         </div>
         <div class="field">
-          <label>Release Date: <input type="text" name="releaseDate"/></label>
+          <label>Release Date: <input type="date" id="datepicker" name="releaseDate"/></label>
         </div>
         <div class="select-one">
           <label>Director: <select name="selectDirector"></select></label>
@@ -146,7 +138,7 @@
           <label>Select movie: <select name="selectMovie"></select></label>
         </div>
         <div class="button-group">
-          <button type="submit" name="commit">Delete</button>
+          <button type="submit" name="commit" disabled="disabled">Delete</button>
           <button type="button" class="back-to-menu">Back to menu</button>
         </div>
       </form>

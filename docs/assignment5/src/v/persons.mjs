@@ -3,7 +3,7 @@
  ***************************************************************/
  import Person from "../m/Person.mjs";
  import Movie from "../m/Movie.mjs";
- import { fillSelectWithOptions } from "../../lib/util.mjs";
+ import { fillSelectWithOptions, createListFromMap } from "../../lib/util.mjs";
  
  /***************************************************************
   Load data
@@ -42,8 +42,12 @@
    for (const key of Object.keys( Person.instances)) {
      const person = Person.instances[key];
      const row = tableBodyEl.insertRow();
+     const dirMoviesListEl = createListFromMap( person.directedMovies, "title");
+     const playMoviesListEl = createListFromMap( person.playedMovies, "title");
      row.insertCell().textContent = person.personId;
      row.insertCell().textContent = person.name;
+     row.insertCell().appendChild(dirMoviesListEl);
+     row.insertCell().appendChild(playMoviesListEl);
    }
    document.getElementById("Person-M").style.display = "none";
    document.getElementById("Person-R").style.display = "block";
@@ -56,6 +60,10 @@
  document.getElementById("Create").addEventListener("click", function () {
    document.getElementById("Person-M").style.display = "none";
    document.getElementById("Person-C").style.display = "block";
+   // reset red box and error messages
+   createFormEl.personId.setCustomValidity("");
+   createFormEl.name.setCustomValidity("");
+   createFormEl.reportValidity();
    createFormEl.reset();
  });
  // set up event handlers for responsive constraint validation
@@ -63,7 +71,11 @@
    createFormEl.personId.setCustomValidity(
        Person.checkPersonIdAsId( createFormEl.personId.value).message);
  });
- /* SIMPLIFIED CODE: no responsive validation of name */
+ // set up event handlers for responsive constraint validation
+ createFormEl.name.addEventListener("input", function () {
+   createFormEl.name.setCustomValidity(
+       Person.checkName( createFormEl.name.value).message);
+ });
  
  // handle Save button click events
  createFormEl["commit"].addEventListener("click", function () {
@@ -76,9 +88,8 @@
        Person.checkPersonIdAsId( slots.personId).message);
    createFormEl.name.setCustomValidity(
        Person.checkName( slots.name).message);
-   /* SIMPLIFIED CODE: no before-submit validation of name */
    // save the input data only if all form fields are valid
-   if (createFormEl.checkValidity()) Person.add( slots);
+   if (createFormEl.reportValidity()) Person.add( slots);
  });
  
  /**********************************************
@@ -95,9 +106,18 @@
        "personId", {displayProp:"name"});
    document.getElementById("Person-M").style.display = "none";
    document.getElementById("Person-U").style.display = "block";
+   // reset red box and error messages
+   updateFormEl.name.setCustomValidity("");
+   updateFormEl.reportValidity();
    updateFormEl.reset();
  });
  updSelPersonEl.addEventListener("change", handlePersonSelectChangeEvent);
+ 
+ // set up event handlers for responsive constraint validation
+ updateFormEl.name.addEventListener("input", function () {
+  updateFormEl.name.setCustomValidity(
+       Person.checkName( updateFormEl.name.value).message);
+ });
  
  // handle Save button click events
  updateFormEl["commit"].addEventListener("click", function () {
@@ -108,9 +128,11 @@
      name: updateFormEl.name.value
    }
    // check all property constraints
-   /* SIMPLIFIED CODE: no before-save validation of name */
+   updateFormEl.name.setCustomValidity(
+    Person.checkName(slots.name).message);
+
    // save the input data only if all of the form fields are valid
-   if (updSelPersonEl.checkValidity()) {
+   if (updateFormEl.reportValidity()) {
      Person.update( slots);
      // update the person selection list's option element
      updSelPersonEl.options[updSelPersonEl.selectedIndex].text = slots.name;
@@ -123,9 +145,9 @@
  function handlePersonSelectChangeEvent () {
    const key = updateFormEl.selectPerson.value;
    if (key) {
-     const act = Person.instances[key];
-     updateFormEl.personId.value = act.personId;
-     updateFormEl.name.value = act.name;
+     const person = Person.instances[key];
+     updateFormEl.personId.value = person.personId;
+     updateFormEl.name.value = person.name;
    } else {
      updateFormEl.reset();
    }

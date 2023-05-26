@@ -1,5 +1,5 @@
 import Person from "./Person.mjs";
-import { isNonEmptyString, cloneObject, isIntegerOrIntegerString } from "../../lib/util.mjs";
+import { isNonEmptyString, cloneObject } from "../../lib/util.mjs";
 import { NoConstraintViolation, 
     MandatoryValueConstraintViolation, 
     RangeConstraintViolation,
@@ -10,8 +10,8 @@ export default class Movie {
   // using a record parameter with ES6 function parameter destructuring
   constructor ({movieId, title, releaseDate, director, director_id,
                  actors, actorIdRefs}) {
-    this.movieId = movieId;      // number (int)
-    this.title = title;       // string
+    this.movieId = movieId;          // number (int)
+    this.title = title;              // string
     this.releaseDate = releaseDate;  // string
     // assign object references or ID references (to be converted in setter)
     this.actors = actors || actorIdRefs;
@@ -101,13 +101,13 @@ export default class Movie {
     const newDate = new Date(newDateString);
     const baseDate = new Date("1895-12-28");
   
-    if (newDateString === undefined) {
-      return new NoConstraintViolation();
+    if (!newDateString) {
+      return new MandatoryValueConstraintViolation("The movie needs a release Date!");
     } else if (typeof(newDateString) !== "string") {
       return new RangeConstraintViolation(
           "The release date must be a real date in the form YYYY-MM-DD!");
     } else if (newDateString.trim() === "") {
-      return new NoConstraintViolation();
+      return new MandatoryValueConstraintViolation("The movie needs a release Date!");
     } else if (isNaN(newDate) || !/\b\d{4}-\d{2}-\d{2}\b/.test(newDateString)) {
       return new RangeConstraintViolation(
           "The release date must be a real date in the form YYYY-MM-DD!");
@@ -123,7 +123,15 @@ export default class Movie {
     return this._actors;
   }
   set actors( a) {
+    // delete all actors
+    if (this.actors) {
+      for (const actorId of Object.keys( this.actors)) {
+        delete this._actors[actorId].playedMovies[movieId];
+      }
+    }
     this._actors = {};
+    
+    // refill list of actors
     if (Array.isArray(a)) {  // array of IdRefs
       for (const idRef of a) {
         this.addActor( idRef);
@@ -145,29 +153,29 @@ export default class Movie {
   }
   addActor( actor) {
     // a can be an ID reference or an object reference
-    const actor_id = (typeof actor !== "object") ? parseInt( actor) : actor.personId;
-    if (actor_id) {
-      const validationResult = Movie.checkActor( actor_id);
-      if (actor_id && validationResult instanceof NoConstraintViolation) {
-        // add the new author reference
-        const key = String( actor_id);
-        this._actors[key] = Person.instances[key];
-      } else {
-        throw validationResult;
-      }
+    const actor_id = (typeof actor !== "object") ? parseInt(actor) : actor.personId;
+    const validationResult = Movie.checkActor( actor_id);
+    if (actor_id && validationResult instanceof NoConstraintViolation) {
+      // add the new actor reference
+      const key = String( actor_id);
+      this._actors[key] = Person.instances[key];
+      // automatically add the derived inverse reference
+      this._actors[key].playedMovies[this._movieId] = this;
+    } else {
+      throw validationResult;
     }
   }
   removeActor( actor) {
     // a can be an ID reference or an object reference
     const actor_id = (typeof actor !== "object") ? parseInt( actor) : actor.personId;
-    if (actor_id) {
-      const validationResult = Movie.checkActor( actor_id);
-      if (validationResult instanceof NoConstraintViolation) {
-        // delete the author reference
-        delete this._actors[String( actor_id)];
-      } else {
-        throw validationResult;
-      }
+    const validationResult = Movie.checkActor( actor_id);
+    if (validationResult instanceof NoConstraintViolation) {
+      // automatically delete the derived inverse reference
+      delete this._actors[actor_id].playedMovies[this._movieId];
+      // delete the actor reference
+      delete this._actors[actor_id];
+    } else {
+      throw validationResult;
     }
   }
 
@@ -175,12 +183,18 @@ export default class Movie {
     return this._director;
   }
   set director( d) {
-    // p can be an ID reference or an object reference 
+    // d can be an ID reference or an object reference 
     const director_id = (typeof d !==  "object") ? d : d.personId;
     const validationResult = Movie.checkDirector( director_id);
     if (validationResult instanceof NoConstraintViolation) {
+      if (this._director) {
+        // delete the inverse reference in Person::directedMovies
+        delete this._director.directedMovies[ this._movieId];
+      }
       // create the new director reference
       this._director = Person.instances[ director_id];
+      // add the new inverse reference to Person::directedMovies
+      this._director.directedMovies[ this._movieId] = this;
     } else {
       throw validationResult;
     }
@@ -196,9 +210,15 @@ export default class Movie {
   }
 
   toString() {
+    var str = "";
+    for (const actorId of Object.keys( this.actors)) {
+      str += this.actors[actorId].toString();
+      str += ", ";
+    }
     return `Movie{ MovieID: ${this.movieId}, Title: ${this.title},
-    MovieRating: ${this.rating},
-    Genres: ${this.genres.toString()} }`;
+    ReleaseDate: ${this.releaseDate},
+    Actors: ` + str +
+    `Director: ${this.director.toString()} }`;
   }
 }
 
@@ -269,8 +289,9 @@ Movie.update = function ({movieId, title, releaseDate, director_id,
         movie.removeActor( actor_id);
       }
     }
-    if (director_id && movie.director_id !== director_id) {
-      movie.director_id = director_id;
+    const dir_id = parseInt(director_id)
+    if (dir_id && movie.director.personId !== dir_id) {
+      movie.director = dir_id;
       updatedProperties.push("director_id");
     }
   } catch (e) {
@@ -292,8 +313,15 @@ Movie.update = function ({movieId, title, releaseDate, director_id,
 
 //  Delete a movie row from persistent storage
 Movie.destroy = function (movieId) {
-  if (Movie.instances[movieId]) {
-    console.log(`Movie ${movieId} deleted`);
+  const movie = Movie.instances[movieId];
+  if (movie) {
+    console.log( movie.toString() + " deleted!");
+    // remove inverse reference from movie.director
+    delete movie.director.directedMovies[movieId];
+    // remove inverse references from all movie.actors
+    for (const actorId of Object.keys( movie.actors)) {
+      delete movie.actors[actorId].playedMovies[movieId];
+    }
     delete Movie.instances[movieId];
   } else {
     console.log(`There is no movie with MovieID ${movieId} in the database!`);
