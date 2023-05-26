@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-05-26T14:53:04.776Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="eMP33bL4zqy2r-y83KD2" version="21.2.9" type="device">
+<mxfile host="app.diagrams.net" modified="2023-05-26T20:52:41.629Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="jYBSXD-1clw1viDpJ3qc" version="21.3.4" type="device">
   <diagram name="Seite-1" id="56pWksoZ0e1JbsKAL9xR">
-    <mxGraphModel dx="474" dy="697" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="474" dy="754" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -13,7 +13,7 @@
         <mxCell id="woLH1raHAGCr-jE1cFck-6" value="«get/set» title[1] : NonEmptyString" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
           <mxGeometry y="52" width="370" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="woLH1raHAGCr-jE1cFck-8" value="«get/set» releaseDate[0..1] : Date" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
+        <mxCell id="woLH1raHAGCr-jE1cFck-8" value="«get/set» releaseDate[1] : Date" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
           <mxGeometry y="78" width="370" height="26" as="geometry" />
         </mxCell>
         <mxCell id="woLH1raHAGCr-jE1cFck-9" value="«get/set» director[1] : Person" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
@@ -31,7 +31,7 @@
         <mxCell id="woLH1raHAGCr-jE1cFck-10" value="checkMovieIdAsId(in id : PositiveInteger) : ConstraintViolation" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
           <mxGeometry y="190" width="370" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="plKIxwFmTa4RFZYm_e8P-3" value="checkMovieIdAsIdRef(in id : PositiveInteger) : ConstraintViolation" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" vertex="1" parent="woLH1raHAGCr-jE1cFck-1">
+        <mxCell id="plKIxwFmTa4RFZYm_e8P-3" value="checkMovieIdAsIdRef(in id : PositiveInteger) : ConstraintViolation" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
           <mxGeometry y="216" width="370" height="26" as="geometry" />
         </mxCell>
         <mxCell id="woLH1raHAGCr-jE1cFck-11" value="checkTitle(in title : NonEmptyString) : ConstraintViolation" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" parent="woLH1raHAGCr-jE1cFck-1" vertex="1">
@@ -61,10 +61,10 @@
         <mxCell id="woLH1raHAGCr-jE1cFck-20" value="«get/set» name[1] : NonEmptyString" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-25" vertex="1">
           <mxGeometry y="52" width="370" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="plKIxwFmTa4RFZYm_e8P-1" value="«get» directedMovies[*] : Movie {inverse of director}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="woLH1raHAGCr-jE1cFck-25">
+        <mxCell id="plKIxwFmTa4RFZYm_e8P-1" value="«get» directedMovies[*] : Movie {inverse of director}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-25" vertex="1">
           <mxGeometry y="78" width="370" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="plKIxwFmTa4RFZYm_e8P-2" value="«get» playedMovies[*] : Movie {inverse of actors}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="woLH1raHAGCr-jE1cFck-25">
+        <mxCell id="plKIxwFmTa4RFZYm_e8P-2" value="«get» playedMovies[*] : Movie {inverse of actors}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="woLH1raHAGCr-jE1cFck-25" vertex="1">
           <mxGeometry y="104" width="370" height="26" as="geometry" />
         </mxCell>
         <mxCell id="woLH1raHAGCr-jE1cFck-27" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="woLH1raHAGCr-jE1cFck-25" vertex="1">
