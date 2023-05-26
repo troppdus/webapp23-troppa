@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+ <meta charset="UTF-8" />
+ <title>Dustin Troppa Movie App</title>
+ <script src="src/c/initialize.js"></script>
+ <script src="src/m/Movie.js"></script>
+</head>
+<body>
+<h1>Movie Database</h1>
+<p>This app supports the following operations:</p>
+<menu>
+ <li><a href="retrieveAndListAllMovies.html"><button type="button">Retrieve
+      </button></a> List all movies</li>
+ <li><a href="createMovie.html"><button type="button">Create</button>
+      </a> Add a new movie</li>
+ <li><a href="updateMovie.html"><button type="button">Update</button>
+      </a> Update a movie</li>
+ <li><a href="deleteMovie.html"><button type="button">Delete</button>
+      </a> Delete a movie</li>
+ <li><button type="button" onclick="Movie.clearData()">
+   Clear database
+ </button></li>
+ <li><button type="button" onclick="Movie.createTestData()">
+   Create test data
+ </button></li>
+</menu>
+</body>
+</html>

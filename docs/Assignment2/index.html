@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+ <meta charset="UTF-8" />
+ <title>Dustin Troppa Movie App</title>
+ <link rel="stylesheet" href="css/normalize.css">
+ <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<h1>Movie Database</h1>
+<p>This app supports the following operations:</p>
+<menu>
+ <li><a href="retrieveAndListAllMovies.html"><button type="button">Retrieve
+      </button></a> List all movies</li>
+ <li><a href="createMovie.html"><button type="button">Create</button>
+      </a> Add a new movie</li>
+ <li><a href="updateMovie.html"><button type="button">Update</button>
+      </a> Update a movie</li>
+ <li><a href="deleteMovie.html"><button type="button">Delete</button>
+      </a> Delete a movie</li>
+ <li><button type="button" id="clearData">
+   Clear database
+ </button></li>
+ <li><button class="generateTestData" type="button">
+   Create test data
+ </button></li>
+ <script type="module">
+  import Movie from "./src/m/Movie.mjs";
+  const clearButton = document.getElementById("clearData"),
+        generateTestDataButtons = document.querySelectorAll("button.generateTestData");
+  // Set event handler for the button "clearData"
+  clearButton.addEventListener("click", Movie.clearData);
+  for (const btn of generateTestDataButtons) {
+       btn.addEventListener("click", Movie.createTestData);
+  }
+ </script>
+</menu>
+</body>
+</html>
