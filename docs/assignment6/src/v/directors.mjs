@@ -3,6 +3,7 @@
  ***************************************************************/
  import Person from "../m/Person.mjs";
  import Movie from "../m/Movie.mjs";
+ import Director from "../m/Director.mjs";
  import { fillSelectWithOptions, createListFromMap } from "../../lib/util.mjs";
  
  /***************************************************************
@@ -31,39 +32,36 @@
    for (const Subtype of Person.subtypes) {
     Subtype.saveAll();
    }
-   // also save movies because movies may be deleted when an person is deleted
+   // also save movies because movies may be deleted when an firector is deleted
    Movie.saveAll();
  });
  
  /**********************************************
-  Use case Retrieve and List All Persons
+  Use case Retrieve and List All Directors
   **********************************************/
  document.getElementById("RetrieveAndListAll")
      .addEventListener("click", function () {
-   const tableBodyEl = document.querySelector("section#Person-R > table > tbody");
+   const tableBodyEl = document.querySelector("section#Director-R > table > tbody");
    tableBodyEl.innerHTML = "";
-   for (const key of Object.keys( Person.instances)) {
-     const person = Person.instances[key];
+   for (const key of Object.keys( Director.instances)) {
+     const director = Director.instances[key];
      const row = tableBodyEl.insertRow();
-     const roles = [];
-     row.insertCell().textContent = person.personId;
-     row.insertCell().textContent = person.name;
-     for (const Subtype of Person.subtypes) {
-      if (person.personId in Subtype.instances) roles.push(Subtype.name);
-     }
-     row.insertCell().textContent = roles.toString();
+     const dirMoviesListEl = createListFromMap( director.directedMovies, "title");
+     row.insertCell().textContent = director.personId;
+     row.insertCell().textContent = director.name;
+     row.insertCell().appendChild(dirMoviesListEl);
    }
-   document.getElementById("Person-M").style.display = "none";
-   document.getElementById("Person-R").style.display = "block";
+   document.getElementById("Director-M").style.display = "none";
+   document.getElementById("Director-R").style.display = "block";
  });
  
  /**********************************************
-  Use case Create Person
+  Use case Create Director
   **********************************************/
- const createFormEl = document.querySelector("section#Person-C > form");
+ const createFormEl = document.querySelector("section#Director-C > form");
  document.getElementById("Create").addEventListener("click", function () {
-   document.getElementById("Person-M").style.display = "none";
-   document.getElementById("Person-C").style.display = "block";
+   document.getElementById("Director-M").style.display = "none";
+   document.getElementById("Director-C").style.display = "block";
    // reset red box and error messages
    createFormEl.personId.setCustomValidity("");
    createFormEl.name.setCustomValidity("");
@@ -93,29 +91,29 @@
    createFormEl.name.setCustomValidity(
        Person.checkName( slots.name).message);
    // save the input data only if all form fields are valid
-   if (createFormEl.reportValidity()) Person.add( slots);
+   if (createFormEl.reportValidity()) Director.add( slots);
  });
  
  /**********************************************
-  Use case Update Person
+  Use case Update Director
   **********************************************/
- const updateFormEl = document.querySelector("section#Person-U > form");
- const updSelPersonEl = updateFormEl.selectPerson;
+ const updateFormEl = document.querySelector("section#Director-U > form");
+ const updSelDirectorEl = updateFormEl.selectDirector;
  // handle click event for the menu item "Update"
  document.getElementById("Update").addEventListener("click", function () {
    // reset selection list (drop its previous contents)
-   updSelPersonEl.innerHTML = "";
+   updSelDirectorEl.innerHTML = "";
    // populate the selection list
-   fillSelectWithOptions( updSelPersonEl, Person.instances,
+   fillSelectWithOptions( updSelDirectorEl, Director.instances,
        "personId", {displayProp:"name"});
-   document.getElementById("Person-M").style.display = "none";
-   document.getElementById("Person-U").style.display = "block";
+   document.getElementById("Director-M").style.display = "none";
+   document.getElementById("Director-U").style.display = "block";
    // reset red box and error messages
    updateFormEl.name.setCustomValidity("");
    updateFormEl.reportValidity();
    updateFormEl.reset();
  });
- updSelPersonEl.addEventListener("change", handlePersonSelectChangeEvent);
+ updSelDirectorEl.addEventListener("change", handleDirectorSelectChangeEvent);
  
  // set up event handlers for responsive constraint validation
  updateFormEl.name.addEventListener("input", function () {
@@ -125,7 +123,7 @@
  
  // handle Save button click events
  updateFormEl["commit"].addEventListener("click", function () {
-   const personIdRef = updSelPersonEl.value;
+   const personIdRef = updSelDirectorEl.value;
    if (!personIdRef) return;
    const slots = {
      personId: updateFormEl.personId.value,
@@ -137,48 +135,48 @@
 
    // save the input data only if all of the form fields are valid
    if (updateFormEl.reportValidity()) {
-     Person.update( slots);
-     // update the person selection list's option element
-     updSelPersonEl.options[updSelPersonEl.selectedIndex].text = slots.name;
+     Director.update( slots);
+     // update the director selection list's option element
+     updSelDirectorEl.options[updSelDirectorEl.selectedIndex].text = slots.name;
    }
  });
  /**
-  * handle person selection events
-  * when a person is selected, populate the form with the data of the selected person
+  * handle director selection events
+  * when a director is selected, populate the form with the data of the selected director
   */
- function handlePersonSelectChangeEvent () {
-   const key = updateFormEl.selectPerson.value;
+ function handleDirectorSelectChangeEvent () {
+   const key = updateFormEl.selectDirector.value;
    if (key) {
-     const person = Person.instances[key];
-     updateFormEl.personId.value = person.personId;
-     updateFormEl.name.value = person.name;
+     const director = Director.instances[key];
+     updateFormEl.personId.value = director.personId;
+     updateFormEl.name.value = director.name;
    } else {
      updateFormEl.reset();
    }
  }
  
  /**********************************************
-  Use case Delete Person
+  Use case Delete Director
   **********************************************/
- const deleteFormEl = document.querySelector("section#Person-D > form");
- const delSelPersonEl = deleteFormEl.selectPerson;
+ const deleteFormEl = document.querySelector("section#Director-D > form");
+ const delSelDirectorEl = deleteFormEl.selectPerson;
  document.getElementById("Delete").addEventListener("click", function () {
-   document.getElementById("Person-M").style.display = "none";
-   document.getElementById("Person-D").style.display = "block";
+   document.getElementById("Director-M").style.display = "none";
+   document.getElementById("Director-D").style.display = "block";
    // reset selection list (drop its previous contents)
-   delSelPersonEl.innerHTML = "";
+   delSelDirectorEl.innerHTML = "";
    // populate the selection list
-   fillSelectWithOptions( delSelPersonEl, Person.instances,
+   fillSelectWithOptions( delSelDirectorEl, Director.instances,
        "personId", {displayProp:"name"});
    deleteFormEl.reset();
  });
  // handle Delete button click events
  deleteFormEl["commit"].addEventListener("click", function () {
-   const personIdRef = delSelPersonEl.value;
+   const personIdRef = delSelDirectorEl.value;
    if (!personIdRef) return;
-   if (confirm("Do you really want to delete this person?")) {
-     Person.destroy( personIdRef);
-     delSelPersonEl.remove( delSelPersonEl.selectedIndex);
+   if (confirm("Do you really want to delete this director?")) {
+     Director.destroy( personIdRef);
+     delSelDirectorEl.remove( delSelDirectorEl.selectedIndex);
    }
  });
  
@@ -187,11 +185,11 @@
   **********************************************/
  function refreshManageDataUI() {
    // show the manage person UI and hide the other UIs
-   document.getElementById("Person-M").style.display = "block";
-   document.getElementById("Person-R").style.display = "none";
-   document.getElementById("Person-C").style.display = "none";
-   document.getElementById("Person-U").style.display = "none";
-   document.getElementById("Person-D").style.display = "none";
+   document.getElementById("Director-M").style.display = "block";
+   document.getElementById("Director-R").style.display = "none";
+   document.getElementById("Director-C").style.display = "none";
+   document.getElementById("Director-U").style.display = "none";
+   document.getElementById("Director-D").style.display = "none";
  }
  
  // Set up Manage Persons UI

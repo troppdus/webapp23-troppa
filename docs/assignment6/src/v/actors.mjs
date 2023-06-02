@@ -3,6 +3,7 @@
  ***************************************************************/
  import Person from "../m/Person.mjs";
  import Movie from "../m/Movie.mjs";
+ import Actor from "../m/Actor.mjs";
  import { fillSelectWithOptions, createListFromMap } from "../../lib/util.mjs";
  
  /***************************************************************
@@ -36,37 +37,36 @@
  });
  
  /**********************************************
-  Use case Retrieve and List All Persons
+  Use case Retrieve and List All Actors
   **********************************************/
  document.getElementById("RetrieveAndListAll")
      .addEventListener("click", function () {
-   const tableBodyEl = document.querySelector("section#Person-R > table > tbody");
+   const tableBodyEl = document.querySelector("section#Actor-R > table > tbody");
    tableBodyEl.innerHTML = "";
-   for (const key of Object.keys( Person.instances)) {
-     const person = Person.instances[key];
+   for (const key of Object.keys( Actor.instances)) {
+     const actor = Actor.instances[key];
      const row = tableBodyEl.insertRow();
-     const roles = [];
-     row.insertCell().textContent = person.personId;
-     row.insertCell().textContent = person.name;
-     for (const Subtype of Person.subtypes) {
-      if (person.personId in Subtype.instances) roles.push(Subtype.name);
-     }
-     row.insertCell().textContent = roles.toString();
+     const playMoviesListEl = createListFromMap( actor.playedMovies, "title");
+     row.insertCell().textContent = actor.personId;
+     row.insertCell().textContent = actor.name;
+     row.insertCell().textContent = actor.agent;
+     row.insertCell().appendChild(playMoviesListEl);
    }
-   document.getElementById("Person-M").style.display = "none";
-   document.getElementById("Person-R").style.display = "block";
+   document.getElementById("Actor-M").style.display = "none";
+   document.getElementById("Actor-R").style.display = "block";
  });
  
  /**********************************************
-  Use case Create Person
+  Use case Create Actor
   **********************************************/
- const createFormEl = document.querySelector("section#Person-C > form");
+ const createFormEl = document.querySelector("section#Actor-C > form");
  document.getElementById("Create").addEventListener("click", function () {
-   document.getElementById("Person-M").style.display = "none";
-   document.getElementById("Person-C").style.display = "block";
+   document.getElementById("Actor-M").style.display = "none";
+   document.getElementById("Actor-C").style.display = "block";
    // reset red box and error messages
    createFormEl.personId.setCustomValidity("");
    createFormEl.name.setCustomValidity("");
+   createFormEl.selectAgent.setCustomValidity("");
    createFormEl.reportValidity();
    createFormEl.reset();
  });
@@ -80,120 +80,135 @@
    createFormEl.name.setCustomValidity(
        Person.checkName( createFormEl.name.value).message);
  });
+ createFormEl.selectAgent.addEventListener("click", function () {
+  createFormEl.selectAgent.setCustomValidity(
+       Actor.checkAgent( createFormEl["selectAgent"].value).message);
+ });
  
  // handle Save button click events
  createFormEl["commit"].addEventListener("click", function () {
    const slots = {
      personId: createFormEl.personId.value,
-     name: createFormEl.name.value
+     name: createFormEl.name.value,
+     agent_id: createFormEl["selectAgent"].value
    };
    // check all input fields and show error messages
    createFormEl.personId.setCustomValidity(
        Person.checkPersonIdAsId( slots.personId).message);
    createFormEl.name.setCustomValidity(
        Person.checkName( slots.name).message);
+   createFormEl.selectAgent.setCustomValidity(
+       Actor.checkAgent( slots.agent_id).message);
    // save the input data only if all form fields are valid
-   if (createFormEl.reportValidity()) Person.add( slots);
+   if (createFormEl.reportValidity()) Actor.add( slots);
  });
  
  /**********************************************
-  Use case Update Person
+  Use case Update Actor
   **********************************************/
- const updateFormEl = document.querySelector("section#Person-U > form");
- const updSelPersonEl = updateFormEl.selectPerson;
+ const updateFormEl = document.querySelector("section#Actor-U > form");
+ const updSelActorEl = updateFormEl.selectActor;
  // handle click event for the menu item "Update"
  document.getElementById("Update").addEventListener("click", function () {
    // reset selection list (drop its previous contents)
-   updSelPersonEl.innerHTML = "";
+   updSelActorEl.innerHTML = "";
    // populate the selection list
-   fillSelectWithOptions( updSelPersonEl, Person.instances,
+   fillSelectWithOptions( updSelActorEl, Actor.instances,
        "personId", {displayProp:"name"});
-   document.getElementById("Person-M").style.display = "none";
-   document.getElementById("Person-U").style.display = "block";
+   document.getElementById("Actor-M").style.display = "none";
+   document.getElementById("Actor-U").style.display = "block";
    // reset red box and error messages
    updateFormEl.name.setCustomValidity("");
+   createFormEl.selectAgent.setCustomValidity("");
    updateFormEl.reportValidity();
    updateFormEl.reset();
  });
- updSelPersonEl.addEventListener("change", handlePersonSelectChangeEvent);
+ updSelActorEl.addEventListener("change", handleActorSelectChangeEvent);
  
  // set up event handlers for responsive constraint validation
  updateFormEl.name.addEventListener("input", function () {
   updateFormEl.name.setCustomValidity(
        Person.checkName( updateFormEl.name.value).message);
  });
+ updateFormEl.selectAgent.addEventListener("click", function () {
+  updateFormEl.selectAgent.setCustomValidity(
+       Actor.checkAgent( updateFormEl["selectAgent"].value).message);
+ });
  
  // handle Save button click events
  updateFormEl["commit"].addEventListener("click", function () {
-   const personIdRef = updSelPersonEl.value;
+   const personIdRef = updSelActorEl.value;
    if (!personIdRef) return;
    const slots = {
      personId: updateFormEl.personId.value,
-     name: updateFormEl.name.value
+     name: updateFormEl.name.value,
+     agent_id: updateFormEl["selectAgent"].value
    }
    // check all property constraints
    updateFormEl.name.setCustomValidity(
     Person.checkName(slots.name).message);
+   updateFormEl.selectAgent.setCustomValidity(
+       Actor.checkAgent( slots.agent_id).message);
 
    // save the input data only if all of the form fields are valid
    if (updateFormEl.reportValidity()) {
-     Person.update( slots);
-     // update the person selection list's option element
-     updSelPersonEl.options[updSelPersonEl.selectedIndex].text = slots.name;
+     Actor.update( slots);
+     // update the actor selection list's option element
+     updSelActorEl.options[updSelActorEl.selectedIndex].text = slots.name;
    }
  });
  /**
-  * handle person selection events
-  * when a person is selected, populate the form with the data of the selected person
+  * handle actor selection events
+  * when a actor is selected, populate the form with the data of the selected person
   */
- function handlePersonSelectChangeEvent () {
-   const key = updateFormEl.selectPerson.value;
+ function handleActorSelectChangeEvent () {
+   const key = updateFormEl.selectActor.value;
    if (key) {
-     const person = Person.instances[key];
-     updateFormEl.personId.value = person.personId;
-     updateFormEl.name.value = person.name;
+     const actor = Actor.instances[key];
+     updateFormEl.personId.value = actor.personId;
+     updateFormEl.name.value = actor.name;
    } else {
      updateFormEl.reset();
    }
  }
  
  /**********************************************
-  Use case Delete Person
+  Use case Delete Actor
   **********************************************/
- const deleteFormEl = document.querySelector("section#Person-D > form");
- const delSelPersonEl = deleteFormEl.selectPerson;
+ const deleteFormEl = document.querySelector("section#Actor-D > form");
+ const delSelActorEl = deleteFormEl.selectActor;
  document.getElementById("Delete").addEventListener("click", function () {
-   document.getElementById("Person-M").style.display = "none";
-   document.getElementById("Person-D").style.display = "block";
+   document.getElementById("Actor-M").style.display = "none";
+   document.getElementById("Actor-D").style.display = "block";
    // reset selection list (drop its previous contents)
-   delSelPersonEl.innerHTML = "";
+   delSelActorEl.innerHTML = "";
    // populate the selection list
-   fillSelectWithOptions( delSelPersonEl, Person.instances,
+   fillSelectWithOptions( delSelActorEl, Actor.instances,
        "personId", {displayProp:"name"});
    deleteFormEl.reset();
  });
  // handle Delete button click events
  deleteFormEl["commit"].addEventListener("click", function () {
-   const personIdRef = delSelPersonEl.value;
+   const personIdRef = delSelActorEl.value;
    if (!personIdRef) return;
    if (confirm("Do you really want to delete this person?")) {
-     Person.destroy( personIdRef);
-     delSelPersonEl.remove( delSelPersonEl.selectedIndex);
+     Actor.destroy( personIdRef);
+     delSelActorEl.remove( delSelActorEl.selectedIndex);
    }
  });
  
  /**********************************************
-  * Refresh the Manage Persons Data UI
+  * Refresh the Manage Actors Data UI
   **********************************************/
  function refreshManageDataUI() {
    // show the manage person UI and hide the other UIs
-   document.getElementById("Person-M").style.display = "block";
-   document.getElementById("Person-R").style.display = "none";
-   document.getElementById("Person-C").style.display = "none";
-   document.getElementById("Person-U").style.display = "none";
-   document.getElementById("Person-D").style.display = "none";
+   document.getElementById("Actor-M").style.display = "block";
+   document.getElementById("Actor-R").style.display = "none";
+   document.getElementById("Actor-C").style.display = "none";
+   document.getElementById("Actor-U").style.display = "none";
+   document.getElementById("Actor-D").style.display = "none";
  }
  
- // Set up Manage Persons UI
+ // Set up Manage Actors UI
  refreshManageDataUI();
  

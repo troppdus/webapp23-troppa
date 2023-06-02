@@ -5,7 +5,9 @@
  import Movie from "../m/Movie.mjs";
  import { fillSelectWithOptions, createListFromMap, createMultiSelectionWidget }
      from "../../lib/util.mjs";
- 
+ import { MovieCategoryEL} from "../../lib/Enumeration.mjs";
+ import { displaySegmentFields, undisplayAllSegmentFields} from "./app.mjs";
+
  /***************************************************************
   Load data
   ***************************************************************/
@@ -48,6 +50,17 @@
      row.insertCell().textContent = movie.releaseDate;
      row.insertCell().appendChild( actListEl);
      row.insertCell().textContent = movie.director.name;
+     if (movie.category) {
+      switch (movie.category) {
+      case MovieCategoryEL.TVSERIESEPISODE:
+        row.insertCell().textContent = movie.tvSeriesName;
+        row.insertCell().textContent = "Episode number " + movie.episodeNo;
+        break;
+      case MovieCategoryEL.BIOGRAPHY: 
+        row.insertCell().textContent = "Biography about " + movie.about.name;
+        break;
+      }
+    }
    }
  });
  
@@ -93,7 +106,18 @@
   createFormEl.selectDirector.setCustomValidity(
       Movie.checkDirector( createFormEl["selectDirector"].value).message);
  });
- 
+
+ createFormEl.category.addEventListener("click", function () {
+  // the array index of MovieCategoryEL.labels
+  const categoryIndexStr = createFormEl.category.value;
+  if (categoryIndexStr) {
+  displaySegmentFields( createFormEl, MovieCategoryEL.labels,
+    parseInt( categoryIndexStr) + 1);
+  } else {
+  undisplayAllSegmentFields( createFormEl, MovieCategoryEL.labels);
+  }
+  });
+
  // handle Save button click events
  createFormEl["commit"].addEventListener("click", function () {
    const slots = {
@@ -192,6 +216,16 @@
  updateFormEl.selectDirector.addEventListener("click", function () {
   updateFormEl.selectDirector.setCustomValidity(
       Movie.checkDirector( updateFormEl["selectDirector"].value).message);
+ });
+ updateFormEl.category.addEventListener("click", function () {
+        // the array index of MovieCategoryEL.labels
+  const categoryIndexStr = updateFormEl.category.value;
+  if (categoryIndexStr) {
+    displaySegmentFields( updateFormEl, MovieCategoryEL.labels,
+        parseInt( categoryIndexStr) + 1);
+  } else {
+    undisplayAllSegmentFields( updateFormEl, MovieCategoryEL.labels);
+  }
  });
 
  // handle Save button click events

@@ -19,8 +19,10 @@
     </div>
     <nav>
       <ul>
-        <li><a href="persons.html">Persons</a></li>
         <li><a href="movies.html">Movies</a></li>
+        <li><a href="persons.html">Persons</a></li>
+        <li><a href="actors.html">Actors</a></li>
+        <li><a href="directors.html">Directors</a></li>
       </ul>
     </nav>
   </div>
@@ -55,13 +57,14 @@
       <h1>Retrieve and list all movie records</h1>
       <table>
         <thead>
-        <tr>
+         <tr>
           <th>MovieID</th>
           <th>Title</th>
           <th>Release Date</th>
           <th>Actors</th>
           <th>Director</th>
-        </tr>
+          <th>Category</th>
+         </tr>
         </thead>
         <tbody></tbody>
       </table>
@@ -90,6 +93,18 @@
           <label>Actors:
             <select name="selectActors" multiple="multiple"></select>
           </label>
+        </div>
+        <div class="field">
+          <label>Category: <select name="category"></select></label>
+        </div>
+        <div class="field Biography"><!-- conditional field -->
+          <label>About: <select name="selectAboutPerson"></select></label>
+        </div>
+        <div class="field TvSeriesEpisode"><!-- conditional field -->
+          <label>Series name: <input type="text" name="tvSeriesName" /></label>
+        </div>
+        <div class="field TvSeriesEpisode"><!-- conditional field -->
+          <label>Episode number: <input type="text" name="episodeNo" /></label>
         </div>
         <div class="button-group">
           <button type="submit" name="commit">Save</button>
@@ -122,6 +137,18 @@
         <div class="widget">
           <label for="updMovieSelectActors">Actors:</label>
           <div id="updMovieSelectActors" class="MultiSelectionWidget"></div>
+        </div>
+        <div class="field">
+          <label>Category: <select name="category"></select></label>
+        </div>
+        <div class="field Biography"><!-- conditional field -->
+          <label>About: <select name="selectAboutPerson"></select></label>
+        </div>
+        <div class="field TvSeriesEpisode"><!-- conditional field -->
+          <label>Series name: <input type="text" name="tvSeriesName" /></label>
+        </div>
+        <div class="field TvSeriesEpisode"><!-- conditional field -->
+          <label>Episode number: <input type="text" name="episodeNo" /></label>
         </div>
         <div class="button-group">
           <button type="submit" name="commit" disabled="disabled">Save</button>
