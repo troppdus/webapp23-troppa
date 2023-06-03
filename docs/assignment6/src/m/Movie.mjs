@@ -462,7 +462,7 @@ Movie.update = function ({movieId, title, releaseDate, director_id,
 Movie.destroy = function (movieId) {
   const movie = Movie.instances[movieId];
   if (movie) {
-    console.log( movie.toString() + " deleted!");
+    console.log( movie.title + " deleted!");
     // remove inverse reference from movie.director
     delete movie.director.directedMovies[movieId];
     // remove inverse references from all movie.actors

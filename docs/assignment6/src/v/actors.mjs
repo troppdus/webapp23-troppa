@@ -177,7 +177,7 @@
      // set up the associated person as agent selection list
      if (actor.agent) {
       fillSelectWithOptionsAndSelect( selectAgentEl, Person.instances,
-          "personId", {displayProp: "name"}, actor.agent.personId);
+          "personId", {displayProp: "name"}, actor.agent.personId, false);
      } else {
       fillSelectWithOptions(selectAgentEl, Person.instances,
         "personId", {displayProp: "name"});

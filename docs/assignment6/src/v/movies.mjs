@@ -2,9 +2,11 @@
  Import classes, datatypes and utility procedures
  ***************************************************************/
  import Person from "../m/Person.mjs";
+ import Director from "../m/Director.mjs";
+ import Actor from "../m/Actor.mjs"
  import Movie from "../m/Movie.mjs";
  import { fillSelectWithOptions, fillSelectWithOptionsAndSelect,
-   createListFromMap, createMultiSelectionWidget, fill } from "../../lib/util.mjs";
+   createListFromMap, createMultiSelectionWidget, fill, createOption } from "../../lib/util.mjs";
  import { MovieCategoryEL} from "../../lib/Enumeration.mjs";
  import { displaySegmentFields, undisplayAllSegmentFields} from "./app.mjs";
 
@@ -73,21 +75,25 @@
        selcetAboutEl = createFormEl["selectAboutPerson"];
  document.getElementById("Create").addEventListener("click", function () {
    // set up a single selection list for selecting a director
-   fillSelectWithOptions( selectDirectorEl, Person.instances,
-       "personId", {displayProp: "name"});
+   fillSelectWithOptionsAndSelect( selectDirectorEl, Director.instances,
+       "personId", {displayProp: "name"}, 0, true);
    // set up a multiple selection list for selecting actors
-   fillSelectWithOptions( selectActorsEl, Person.instances,
+   fillSelectWithOptions( selectActorsEl, Actor.instances,
        "personId", {displayProp: "name"});
    document.getElementById("Movie-M").style.display = "none";
    document.getElementById("Movie-C").style.display = "block";
    undisplayAllSegmentFields( createFormEl, MovieCategoryEL.labels);
-   fillSelectWithOptions( selcetAboutEl, Person.instances,
-       "personId", {displayProp: "name"});
+   fillSelectWithOptionsAndSelect( selcetAboutEl, Person.instances,
+       "personId", {displayProp: "name"}, 0, true);
    // reset red box and error messages
    createFormEl.movieId.setCustomValidity("");
    createFormEl.title.setCustomValidity("");
    createFormEl.releaseDate.setCustomValidity("");
    createFormEl.selectDirector.setCustomValidity("");
+   createFormEl.category.setCustomValidity("");
+   createFormEl.selectAboutPerson.setCustomValidity("");
+   createFormEl.tvSeriesName.setCustomValidity("");
+   createFormEl.episodeNo.setCustomValidity("");
    createFormEl.reportValidity();
    createFormEl.reset();
  });
@@ -111,7 +117,7 @@
       Movie.checkDirector( createFormEl["selectDirector"].value).message);
  });
  
- // set up the book category selection list
+ // set up the movie category selection list
  fill( createFormEl.category, MovieCategoryEL.labels);
  createFormEl.category.addEventListener("change", function () {
   // the array index of MovieCategoryEL.labels
@@ -131,7 +137,11 @@
      title: createFormEl["title"].value,
      releaseDate: createFormEl["releaseDate"].value,
      actorIdRefs: [],
-     director_id: createFormEl["selectDirector"].value
+     director_id: createFormEl["selectDirector"].value,
+     category: parseInt(createFormEl["category"].value)+1,
+     aboutIdRefs: undefined,
+     tvSeriesName: undefined,
+     episodeNo: undefined
    };
    // check all input fields and show error messages
    createFormEl.movieId.setCustomValidity(
@@ -145,6 +155,21 @@
    // check the mandatory value constraint for actors
    createFormEl.selectDirector.setCustomValidity(
        Movie.checkDirector( slots.director_id).message);
+   createFormEl.category.setCustomValidity(
+       Movie.checkCategory( slots.category).message);
+  
+   if (slots.category === MovieCategoryEL.BIOGRAPHY) {
+    slots.aboutIdRefs = createFormEl["selectAboutPerson"].value;
+    createFormEl.selectAboutPerson.setCustomValidity(
+      Movie.checkAbout( slots.aboutIdRefs, slots.category).message);
+   } else if (slots.category === MovieCategoryEL.TVSERIESEPISODE) {
+    slots.tvSeriesName = createFormEl["tvSeriesName"].value;
+    createFormEl.tvSeriesName.setCustomValidity(
+      Movie.checkTvSeriesName( slots.tvSeriesName, slots.category).message);
+    slots.episodeNo = createFormEl["episodeNo"].value;
+    createFormEl.episodeNo.setCustomValidity(
+      Movie.checkEpisodeNo( slots.episodeNo, slots.category).message);
+   }
    // save the input data only if all form fields are valid
    if (createFormEl.reportValidity()) {
      // construct a list of actor ID references
@@ -152,6 +177,7 @@
        slots.actorIdRefs.push( opt.value);
      }
      Movie.add( slots);
+     undisplayAllSegmentFields( createFormEl, MovieCategoryEL.labels);
    }
  });
  
@@ -163,16 +189,22 @@
  document.getElementById("Update").addEventListener("click", function () {
    // reset selection list (drop its previous contents)
    updSelMovieEl.innerHTML = "";
+   updateFormEl.category.innerHTML = "";
    // populate the selection list
    fillSelectWithOptions( updSelMovieEl, Movie.instances,
        "movieId", {displayProp: "title"});
    document.getElementById("Movie-M").style.display = "none";
    document.getElementById("Movie-U").style.display = "block";
+   undisplayAllSegmentFields( updateFormEl, MovieCategoryEL.labels);
    // reset red box and error messages
    updateFormEl.movieId.setCustomValidity("");
    updateFormEl.title.setCustomValidity("");
    updateFormEl.releaseDate.setCustomValidity("");
    updateFormEl.selectDirector.setCustomValidity("");
+   updateFormEl.category.setCustomValidity("");
+   updateFormEl.selectAboutPerson.setCustomValidity("");
+   updateFormEl.tvSeriesName.setCustomValidity("");
+   updateFormEl.episodeNo.setCustomValidity("");
    updateFormEl.reportValidity();
    updateFormEl.reset();
  });
@@ -184,18 +216,37 @@
    const saveButton = updateFormEl["commit"],
      selectActorsWidget = updateFormEl.querySelector(".MultiSelectionWidget"),
      selectDirectorEl = updateFormEl["selectDirector"],
-     movieId = updateFormEl["selectMovie"].value;
+     movieId = updateFormEl["selectMovie"].value,
+     updSelAboutEl = updateFormEl["selectAboutPerson"];
    if (movieId) {
      const movie = Movie.instances[movieId];
      updateFormEl["movieId"].value = movie.movieId;
      updateFormEl["title"].value = movie.title;
      updateFormEl["releaseDate"].value = movie.releaseDate;
      // set up the associated director selection list
-     fillSelectWithOptionsAndSelect( selectDirectorEl, Person.instances,
-         "personId", {displayProp: "name"}, movie.director.personId);
+     fillSelectWithOptionsAndSelect( selectDirectorEl, Director.instances,
+         "personId", {displayProp: "name"}, movie.director.personId, false);
      // set up the associated actors selection widget
      createMultiSelectionWidget( selectActorsWidget, movie.actors,
-         Person.instances, "personId", "name", 1);  // minCard=1
+         Actor.instances, "personId", "name", 1);  // minCard=1
+     if (movie.about) {
+      fillSelectWithOptionsAndSelect( updSelAboutEl, Person.instances,
+          "personId", {displayProp: "name"}, movie.about.personId, true);
+     }
+     updateFormEl["tvSeriesName"].value = movie.tvSeriesName;
+     updateFormEl["episodeNo"].value = movie.episodeNo;
+         
+     // set up the movie category selection list
+     updateFormEl.category.innerHTML = "";
+     if (movie.category) {
+      const cat = parseInt(movie.category);
+      updateFormEl.category.add( createOption(movie.category-1,
+          MovieCategoryEL.labels[cat-1]));
+      displaySegmentFields( updateFormEl, MovieCategoryEL.labels, cat);
+     } else {
+      updateFormEl.category.add( createOption(""," --- "));
+      undisplayAllSegmentFields( updateFormEl, MovieCategoryEL.labels);
+     }
      saveButton.disabled = false;
    } else {
      updateFormEl.reset();
@@ -223,16 +274,17 @@
   updateFormEl.selectDirector.setCustomValidity(
       Movie.checkDirector( updateFormEl["selectDirector"].value).message);
  });
- updateFormEl.category.addEventListener("click", function () {
-        // the array index of MovieCategoryEL.labels
+ 
+ updateFormEl.category.addEventListener("change", function () {
+  // the array index of MovieCategoryEL.labels
   const categoryIndexStr = updateFormEl.category.value;
   if (categoryIndexStr) {
-    displaySegmentFields( updateFormEl, MovieCategoryEL.labels,
-        parseInt( categoryIndexStr) + 1);
+  displaySegmentFields( updateFormEl, MovieCategoryEL.labels,
+    parseInt( categoryIndexStr) + 1);
   } else {
-    undisplayAllSegmentFields( updateFormEl, MovieCategoryEL.labels);
+  undisplayAllSegmentFields( updateFormEl, MovieCategoryEL.labels);
   }
- });
+  });
 
  // handle Save button click events
  updateFormEl["commit"].addEventListener("click", function () {
@@ -244,7 +296,11 @@
      movieId: updateFormEl["movieId"].value,
      title: updateFormEl["title"].value,
      releaseDate: updateFormEl["releaseDate"].value,
-     director_id: updateFormEl["selectDirector"].value
+     director_id: updateFormEl["selectDirector"].value,
+     category: parseInt(updateFormEl["category"].value)+1,
+     about_id: undefined,
+     tvSeriesName: undefined,
+     episodeNo: undefined
    };
    // check all input fields and show error messages
    updateFormEl.title.setCustomValidity(
@@ -254,6 +310,24 @@
    // check the mandatory value constraint for actors
    updateFormEl.selectDirector.setCustomValidity(
     Movie.checkDirector( slots.director_id).message);
+   if (isNaN(slots.category)) {
+    slots.category = "";
+   }
+   updateFormEl.category.setCustomValidity(
+    Movie.checkCategory( slots.category).message);
+  
+   if (slots.category === MovieCategoryEL.BIOGRAPHY) {
+    slots.about_id = updateFormEl["selectAboutPerson"].value;
+    updateFormEl.selectAboutPerson.setCustomValidity(
+      Movie.checkAbout( slots.about_id, slots.category).message);
+   } else if (slots.category === MovieCategoryEL.TVSERIESEPISODE) {
+    slots.tvSeriesName = updateFormEl["tvSeriesName"].value;
+    updateFormEl.tvSeriesName.setCustomValidity(
+      Movie.checkTvSeriesName( slots.tvSeriesName, slots.category).message);
+    slots.episodeNo = parseInt(updateFormEl["episodeNo"].value);
+    updateFormEl.episodeNo.setCustomValidity(
+      Movie.checkEpisodeNo( slots.episodeNo, slots.category).message);
+   }
    // commit the update only if all form field values are valid
    if (updateFormEl.reportValidity()) {
      // construct actorIdRefs-ToAdd/ToRemove lists
@@ -279,6 +353,8 @@
      updSelMovieEl.options[updSelMovieEl.selectedIndex].text = slots.title;
      // drop widget content
      selectActorsWidget.innerHTML = "";
+     undisplayAllSegmentFields( updateFormEl, MovieCategoryEL.labels);
+     updateFormEl.category.innerHTML = "";
    }
  });
  

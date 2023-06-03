@@ -123,12 +123,12 @@ function fillSelectWithOptions( selectEl, selectionRange, keyProp, optPar) {
 }
 
 function fillSelectWithOptionsAndSelect( selectEl, selectionRange, keyProp,
-            optPar, selectedOne) {
+            optPar, selectedOne, defaultOpt) {
   var optionEl = null, obj = null, displayProp = "";
   // delete old contents
   selectEl.innerHTML = "";
   // create "no selection yet" entry
-  if (!selectEl.multiple) selectEl.add( createOption(""," --- "));
+  if (!defaultOpt) selectEl.add( createOption(""," --- "));
   // create option elements from object property values
   var options = Object.keys( selectionRange);
   for (let i=0; i < options.length; i++) {
@@ -377,4 +377,4 @@ function createChoiceWidget(containerEl, fld, values,
 
 export { isNonEmptyString, fillSelectWithOptions, cloneObject, 
   isIntegerOrIntegerString, createChoiceWidget, createListFromMap, 
-  createMultiSelectionWidget, fillSelectWithOptionsAndSelect, fill};
+  createMultiSelectionWidget, fillSelectWithOptionsAndSelect, fill, createOption};
