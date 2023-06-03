@@ -1,6 +1,7 @@
 import Person from "./Person.mjs";
 import Movie from "./Movie.mjs";
 import { NoConstraintViolation } from "../../lib/errorTypes.mjs";
+import { cloneObject } from "../../lib/util.mjs";
 
 /**
  * The class Actor
@@ -13,7 +14,7 @@ export default class Actor extends Person {
     super({personId, name});
     // derived inverse reference property (inverse of Movie::actors)
     this._playedMovies = {};   // initialize as an empty map
-    if (agent) this.agent = agent || agent_id;
+    if (agent || agent_id) this.agent = agent || agent_id;
   }
 
   get playedMovies() {
@@ -77,7 +78,7 @@ Actor.add = function (slots) {
 /**
  *  Update an existing actor record/object
  */
-Actor.update = function ({personId, name, agent}) {
+Actor.update = function ({personId, name, agent_id}) {
   const actor = Actor.instances[personId],
         objectBeforeUpdate = cloneObject( actor);
   var noConstraintViolated=true, ending="", updatedProperties=[];
@@ -86,13 +87,20 @@ Actor.update = function ({personId, name, agent}) {
       actor.name = name;
       updatedProperties.push("name");
     }
-    if (agent && actor.agent !== agent) {
-      // agent has a non-empty value that is new
-      actor.agent = agent;
-      updatedProperties.push("agent");
-    } else if (!agent && actor.agent !== undefined) {
-      // agent has a empty value that is new
-      delete actor.agent;  // unset the property "agent"
+    const act_id = parseInt(agent_id);
+    if (actor.agent) {
+      if (act_id && actor.agent.personId !== act_id) {
+        // agent has a non-empty value that is new
+        actor.agent = agent_id;
+        updatedProperties.push("agent");
+      } else if (!agent_id && actor.agent !== undefined) {
+        // agent has a empty value that is new
+        delete actor._agent;  // unset the property "agent"
+        updatedProperties.push("agent");
+      }
+    } else if (act_id) {
+      // actor has no agent, but gets now one
+      actor.agent = agent_id;
       updatedProperties.push("agent");
     }
   } catch (e) {
@@ -104,9 +112,9 @@ Actor.update = function ({personId, name, agent}) {
   if (noConstraintViolated) {
     if (updatedProperties.length > 0) {
       ending = updatedProperties.length > 1 ? "ies" : "y";
-      console.log( `Propert${ending} ${updatedProperties.toString()} modified for person ${name}`);
+      console.log( `Propert${ending} ${updatedProperties.toString()} modified for actor ${name}`);
     } else {
-      console.log( `No property value changed for person ${name}!`);
+      console.log( `No property value changed for actor ${name}!`);
     }
   }
 };

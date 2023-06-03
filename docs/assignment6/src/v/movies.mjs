@@ -3,8 +3,8 @@
  ***************************************************************/
  import Person from "../m/Person.mjs";
  import Movie from "../m/Movie.mjs";
- import { fillSelectWithOptions, createListFromMap, createMultiSelectionWidget }
-     from "../../lib/util.mjs";
+ import { fillSelectWithOptions, fillSelectWithOptionsAndSelect,
+   createListFromMap, createMultiSelectionWidget, fill } from "../../lib/util.mjs";
  import { MovieCategoryEL} from "../../lib/Enumeration.mjs";
  import { displaySegmentFields, undisplayAllSegmentFields} from "./app.mjs";
 
@@ -69,7 +69,8 @@
   **********************************************/
  const createFormEl = document.querySelector("section#Movie-C > form"),
        selectActorsEl = createFormEl["selectActors"],
-       selectDirectorEl = createFormEl["selectDirector"];
+       selectDirectorEl = createFormEl["selectDirector"],
+       selcetAboutEl = createFormEl["selectAboutPerson"];
  document.getElementById("Create").addEventListener("click", function () {
    // set up a single selection list for selecting a director
    fillSelectWithOptions( selectDirectorEl, Person.instances,
@@ -79,6 +80,9 @@
        "personId", {displayProp: "name"});
    document.getElementById("Movie-M").style.display = "none";
    document.getElementById("Movie-C").style.display = "block";
+   undisplayAllSegmentFields( createFormEl, MovieCategoryEL.labels);
+   fillSelectWithOptions( selcetAboutEl, Person.instances,
+       "personId", {displayProp: "name"});
    // reset red box and error messages
    createFormEl.movieId.setCustomValidity("");
    createFormEl.title.setCustomValidity("");
@@ -106,8 +110,10 @@
   createFormEl.selectDirector.setCustomValidity(
       Movie.checkDirector( createFormEl["selectDirector"].value).message);
  });
-
- createFormEl.category.addEventListener("click", function () {
+ 
+ // set up the book category selection list
+ fill( createFormEl.category, MovieCategoryEL.labels);
+ createFormEl.category.addEventListener("change", function () {
   // the array index of MovieCategoryEL.labels
   const categoryIndexStr = createFormEl.category.value;
   if (categoryIndexStr) {
@@ -185,8 +191,8 @@
      updateFormEl["title"].value = movie.title;
      updateFormEl["releaseDate"].value = movie.releaseDate;
      // set up the associated director selection list
-     fillSelectWithOptions( selectDirectorEl, Person.instances,
-         "personId", {displayProp: "name"});
+     fillSelectWithOptionsAndSelect( selectDirectorEl, Person.instances,
+         "personId", {displayProp: "name"}, movie.director.personId);
      // set up the associated actors selection widget
      createMultiSelectionWidget( selectActorsWidget, movie.actors,
          Person.instances, "personId", "name", 1);  // minCard=1
@@ -298,7 +304,6 @@
  delSelMovieEl.addEventListener("change", function () {
    const saveButton = deleteFormEl["commit"],
        movieId = delSelMovieEl.value;
-   console.log(movieId);
    if (movieId) {
      saveButton.disabled = false;
    } else {

@@ -46,6 +46,6 @@ Enumeration.prototype.convertEnumIndexes2Names = function (a) {
   return listStr;
 }
 
-var MovieCategoryEL = new Enumeration(["Biography", "TvSeriesEpisode"]);
+const MovieCategoryEL = new Enumeration(["Biography", "TvSeriesEpisode"]);
 
 export { MovieCategoryEL};

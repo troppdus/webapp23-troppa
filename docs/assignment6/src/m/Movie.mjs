@@ -25,7 +25,7 @@ export default class Movie {
 
     // optional properties
     if (category) this.category = category;
-    if (about) this.about = about || aboutIdRefs;
+    if (about || aboutIdRefs) this.about = about || aboutIdRefs;
     if (tvSeriesName) this.tvSeriesName = tvSeriesName;
     if (episodeNo) this.episodeNo = episodeNo;
   }
@@ -260,7 +260,7 @@ export default class Movie {
   set about( a) {
     // d can be an ID reference or an object reference 
     const about_id = (typeof a !==  "object") ? a : a.personId;
-    const validationResult = Movie.checkAbout( a, this.category);
+    const validationResult = Movie.checkAbout( about_id, this.category);
     if (validationResult instanceof NoConstraintViolation) {
       this._about = Person.instances[ about_id];
     } else {
@@ -268,10 +268,10 @@ export default class Movie {
     }
   }
   static checkAbout( about_id, cat) {
-    if (cat === MovieCategoryEL.BIOHRAPHY && !about_id) {
+    if (cat === MovieCategoryEL.BIOGRAPHY && !about_id) {
       return new MandatoryValueConstraintViolation(
         "A person must be provided for a biography!");
-    } else if (cat !== MovieCategoryEL.BIOHRAPHY && about_id) {
+    } else if (cat !== MovieCategoryEL.BIOGRAPHY && about_id) {
       return new ConstraintViolation("About should be empty " +
           "if the movie is not a biography!");
     } else {
@@ -377,7 +377,6 @@ Movie.retrieveAll = function () {
   } catch (e) {
     alert("Error when reading from Local Storage\n" + e);
   }
-  //console.log(movies);
   for (const movieId of Object.keys( movies)) {
     try {
       Movie.instances[movieId] = new Movie( movies[movieId]);

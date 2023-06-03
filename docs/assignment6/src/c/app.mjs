@@ -40,7 +40,7 @@ function createTestData() {
         episodeNo: 6});
     Movie.instances["5"] = new Movie({movieId: 5, title:"A Beautiful Mind",
         releaseDate:"2001-12-21", director: 9, actors:[9, 12], 
-        category: MovieCategoryEL.BIOHRAPHY, about: 14});
+        category: MovieCategoryEL.BIOGRAPHY, about: 14});
     Movie.instances["6"] = new Movie({movieId: 6, title:"Stay",
         releaseDate:"2005-09-24", director: 13, actors:[6, 11]});
     Movie.saveAll();

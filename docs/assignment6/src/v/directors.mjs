@@ -159,7 +159,7 @@
   Use case Delete Director
   **********************************************/
  const deleteFormEl = document.querySelector("section#Director-D > form");
- const delSelDirectorEl = deleteFormEl.selectPerson;
+ const delSelDirectorEl = deleteFormEl.selectDirector;
  document.getElementById("Delete").addEventListener("click", function () {
    document.getElementById("Director-M").style.display = "none";
    document.getElementById("Director-D").style.display = "block";

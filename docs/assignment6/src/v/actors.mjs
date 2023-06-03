@@ -4,7 +4,7 @@
  import Person from "../m/Person.mjs";
  import Movie from "../m/Movie.mjs";
  import Actor from "../m/Actor.mjs";
- import { fillSelectWithOptions, createListFromMap } from "../../lib/util.mjs";
+ import { fillSelectWithOptions, fillSelectWithOptionsAndSelect, createListFromMap } from "../../lib/util.mjs";
  
  /***************************************************************
   Load data
@@ -49,8 +49,10 @@
      const playMoviesListEl = createListFromMap( actor.playedMovies, "title");
      row.insertCell().textContent = actor.personId;
      row.insertCell().textContent = actor.name;
-     row.insertCell().textContent = actor.agent;
      row.insertCell().appendChild(playMoviesListEl);
+     if (actor.agent) {
+      row.insertCell().textContent = actor.agent.name;
+     }
    }
    document.getElementById("Actor-M").style.display = "none";
    document.getElementById("Actor-R").style.display = "block";
@@ -59,10 +61,14 @@
  /**********************************************
   Use case Create Actor
   **********************************************/
- const createFormEl = document.querySelector("section#Actor-C > form");
+ const createFormEl = document.querySelector("section#Actor-C > form"),
+       selectAgentEl = createFormEl["selectAgent"];
  document.getElementById("Create").addEventListener("click", function () {
    document.getElementById("Actor-M").style.display = "none";
    document.getElementById("Actor-C").style.display = "block";
+   // set up a single selection list for selecting a actor
+   fillSelectWithOptions( selectAgentEl, Person.instances,
+       "personId", {displayProp: "name"});
    // reset red box and error messages
    createFormEl.personId.setCustomValidity("");
    createFormEl.name.setCustomValidity("");
@@ -146,7 +152,7 @@
    }
    // check all property constraints
    updateFormEl.name.setCustomValidity(
-    Person.checkName(slots.name).message);
+       Person.checkName(slots.name).message);
    updateFormEl.selectAgent.setCustomValidity(
        Actor.checkAgent( slots.agent_id).message);
 
@@ -162,11 +168,20 @@
   * when a actor is selected, populate the form with the data of the selected person
   */
  function handleActorSelectChangeEvent () {
-   const key = updateFormEl.selectActor.value;
+   const key = updateFormEl.selectActor.value,
+         selectAgentEl = updateFormEl["selectAgent"];
    if (key) {
      const actor = Actor.instances[key];
      updateFormEl.personId.value = actor.personId;
      updateFormEl.name.value = actor.name;
+     // set up the associated person as agent selection list
+     if (actor.agent) {
+      fillSelectWithOptionsAndSelect( selectAgentEl, Person.instances,
+          "personId", {displayProp: "name"}, actor.agent.personId);
+     } else {
+      fillSelectWithOptions(selectAgentEl, Person.instances,
+        "personId", {displayProp: "name"});
+     }
    } else {
      updateFormEl.reset();
    }

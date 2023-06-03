@@ -1,4 +1,5 @@
 import Person from "./Person.mjs";
+import { cloneObject } from "../../lib/util.mjs";
 
 /**
  * The class Director
@@ -71,9 +72,9 @@ Director.update = function ({personId, name}) {
  */
 Director.destroy = function (personId) {
   const person = Director.instances[personId];
-  // delete the person object
-  delete Person.instances[personId];
-  console.log( `Person ${person.name} deleted.`);
+  // delete the director object
+  delete Director.instances[personId];
+  console.log( `Director ${person.name} deleted.`);
 };
 
 /**

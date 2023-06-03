@@ -172,6 +172,20 @@
        "personId", {displayProp:"name"});
    deleteFormEl.reset();
  });
+ /**
+  * handle movie selection events: when a movie is selected,
+  * activate delete button
+  */
+ delSelPersonEl.addEventListener("change", function () {
+   const saveButton = deleteFormEl["commit"],
+       movieId = delSelPersonEl.value;
+   if (movieId) {
+     saveButton.disabled = false;
+   } else {
+     deleteFormEl.reset();
+     saveButton.disabled = true;
+   }
+ });
  // handle Delete button click events
  deleteFormEl["commit"].addEventListener("click", function () {
    const personIdRef = delSelPersonEl.value;
